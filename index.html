@@ -38,7 +38,9 @@
     <script type="text/worker"
         id="nitro-web-worker">var preloadRequests=0;var remainingCount={};var baseURI="";self.onmessage=function(e){switch(e.data.cmd){case"RESOURCE_PRELOAD":var o=e.data.requestId;remainingCount[o]=0;e.data.resources.forEach(function(e){preload(e,function(o){return function(){console.log(o+" DONE: "+e);if(--remainingCount[o]==0){self.postMessage({cmd:"RESOURCE_PRELOAD",requestId:o})}}}(o));remainingCount[o]++});break;case"SET_BASEURI":baseURI=e.data.uri;break}};async function preload(e,o){if(typeof URL!=="undefined"&&baseURI){try{var a=new URL(e,baseURI);e=a.href}catch(e){console.log("Worker error: "+e.message)}}console.log("Preloading "+e);try{var n=new Request(e,{mode:"no-cors",redirect:"follow"});await fetch(n);o()}catch(a){console.log(a);var r=new XMLHttpRequest;r.responseType="blob";r.onload=o;r.onerror=o;r.open("GET",e,true);r.send()}}</script>
     <script
-        id="nprl">(() => { if (window.NPRL != undefined) return; (function (e) { var t = e.prototype; t.after || (t.after = function () { var e, t = arguments, n = t.length, r = 0, i = this, o = i.parentNode, a = Node, c = String, u = document; if (o !== null) { while (r < n) { (e = t[r]) instanceof a ? (i = i.nextSibling) !== null ? o.insertBefore(e, i) : o.appendChild(e) : o.appendChild(u.createTextNode(c(e))); ++r } } }) })(Element); var e, t; e = t = function () { var t = false; var r = window.URL || window.webkitURL; var i = true; var o = false; var a = 2; var c = null; var u = null; var d; var s; var l = null; var f = null; var v = null; var m = { touch: ["touchmove", "touchend"], default: ["mousemove", "click", "keydown", "wheel"] }; var p = true; var h = []; var g = false; var E = []; var y = 0; var b = 0; var w = false; var N = 0; var L = null; var S = false; var R = false; var T = false; var O = []; var A = []; var P = []; var I = []; var C = false; var k = {}; var M = "noModule" in HTMLScriptElement.prototype; var x = requestAnimationFrame || mozRequestAnimationFrame || webkitRequestAnimationFrame || msRequestAnimationFrame; function j(e, t) { if (!k[e]) { k[e] = [] } k[e].push(t) } function B(e, t) { if (k[e]) { var n = 0, r = k[e]; for (var n = 0; n < r.length; n++) { r[n].call(this, t) } } } function q() { (function (e, t) { var r = null; var i = function (e) { r(e) }; var o = null; var a = {}; var c = null; var u = null; var d = 0; e.addEventListener(t, function (r) { if (["load", "DOMContentLoaded"].indexOf(t) != -1) { if (u) { G(function () { e.triggerNitroEvent(t) }) } c = true } else if (t == "readystatechange") { d++; n.ogReadyState = d == 1 ? "interactive" : "complete"; if (u && u >= d) { n.documentReadyState = n.ogReadyState; G(function () { e.triggerNitroEvent(t) }) } } }); e.addEventListener(t + "Nitro", function (e) { if (["load", "DOMContentLoaded"].indexOf(t) != -1) { if (!c) { e.preventDefault(); e.stopImmediatePropagation() } else { } u = true } else if (t == "readystatechange") { u = n.documentReadyState == "interactive" ? 1 : 2; if (d < u) { e.preventDefault(); e.stopImmediatePropagation() } } }); switch (t) { case "load": o = "onload"; break; case "readystatechange": o = "onreadystatechange"; break; case "pageshow": o = "onpageshow"; break; default: o = null; break }if (o) { Object.defineProperty(e, o, { get: function () { return r }, set: function (n) { if (typeof n !== "function") { r = null; e.removeEventListener(t + "Nitro", i) } else { if (!r) { e.addEventListener(t + "Nitro", i) } r = n } } }) } Object.defineProperty(e, "addEventListener" + t, { value: function (r) { if (r != t || !n.startedScriptLoading || document.currentScript && document.currentScript.hasAttribute("nitro-exclude")) { } else { arguments[0] += "Nitro" } e.ogAddEventListener.apply(e, arguments); a[arguments[1]] = arguments[0] } }); Object.defineProperty(e, "removeEventListener" + t, { value: function (t) { var n = a[arguments[1]]; arguments[0] = n; e.ogRemoveEventListener.apply(e, arguments) } }); Object.defineProperty(e, "triggerNitroEvent" + t, { value: function (t, n) { n = n || e; var r = new Event(t + "Nitro", { bubbles: true }); r.isNitroPack = true; Object.defineProperty(r, "type", { get: function () { return t }, set: function () { } }); Object.defineProperty(r, "target", { get: function () { return n }, set: function () { } }); e.dispatchEvent(r) } }); if (typeof e.triggerNitroEvent === "undefined") { (function () { var t = e.addEventListener; var n = e.removeEventListener; Object.defineProperty(e, "ogAddEventListener", { value: t }); Object.defineProperty(e, "ogRemoveEventListener", { value: n }); Object.defineProperty(e, "addEventListener", { value: function (n) { var r = "addEventListener" + n; if (typeof e[r] !== "undefined") { e[r].apply(e, arguments) } else { t.apply(e, arguments) } }, writable: true }); Object.defineProperty(e, "removeEventListener", { value: function (t) { var r = "removeEventListener" + t; if (typeof e[r] !== "undefined") { e[r].apply(e, arguments) } else { n.apply(e, arguments) } } }); Object.defineProperty(e, "triggerNitroEvent", { value: function (t, n) { var r = "triggerNitroEvent" + t; if (typeof e[r] !== "undefined") { e[r].apply(e, arguments) } } }) })() } }).apply(null, arguments) } q(window, "load"); q(window, "pageshow"); q(window, "DOMContentLoaded"); q(document, "DOMContentLoaded"); q(document, "readystatechange"); try { var D = new Worker(r.createObjectURL(new Blob([document.getElementById("nitro-web-worker").textContent], { type: "text/javascript" }))) } catch (e) { var D = new Worker("data:text/javascript;base64," + btoa(document.getElementById("nitro-web-worker").textContent)) } D.onmessage = function (e) { if (e.data.cmd == "RESOURCE_PRELOAD") { B(e.data.requestId, e) } }; if (typeof document.baseURI !== "undefined") { D.postMessage({ cmd: "SET_BASEURI", uri: document.baseURI }) } var H = function (e) { if (--y == 0) { G(Y) } }; var U = function (e) { e.target.removeEventListener("load", U); e.target.removeEventListener("error", U); e.target.removeEventListener("nitroTimeout", U); if (e.type != "nitroTimeout") { clearTimeout(e.target.nitroTimeout) } if (--b == 0 && y == 0) { G(F) } }; var _ = function (e) { var t = e.textContent; try { var n = r.createObjectURL(new Blob([t.replace(/^(?:< !-- ) ?(.*?)(?:- ->)?$/gm, "$1")], { type: "text/javascript " })) }catc h(e) { var n = "data:text/javascript;base64, " + btoa(t.replace(/^(?:< !-- ) ?(.*?)(?:- ->)?$/g  ,"$1") )  }retur   n  ;va  Y  =functio n )  {n.documentReadyStat e  ="interactive  ;document.triggerNitroEvent("readystatechange"  ;document.triggerNitroEvent("DOMContentLoaded" ;i f(window.pageYOffse  t|  |window.pageXOffse )  {window.dispatchEvent(new Event("scroll" ) } R  =tru  ;G(functio n )  {i f  b=  = )  {G( ) }G(  )  )  ;va  F  =functio n ) {i f(  R|  | )retur ; S  =tru  ;L.disconnect(  ;V(  ;n.documentReadyStat e  ="complete  ;document.triggerNitroEvent("readystatechange"  ;window.triggerNitroEvent("load  ,document  ;window.triggerNitroEvent("pageshow  ,document ;i f(window.pageYOffse  t|  |window.pageXOffse  t|  |location.has )  {le  e  =typeof history.scrollRestoratio n!= ="undefined  "&  &history.scrollRestoratio  n=  ="auto ;i f  e&  &typeof NPS  H!= ="undefined  "&  &NPSH.getScrollPos ) >  0&  &window.pageYOffse t  >document.documentElement.clientHeigh t  *. )  {window.scrollTo(  ,NPSH.getScrollPos( ) }else i f(location.has ) {tr y  {le  e  =document.querySelector(location.hash ;i f( )  {e.scrollIntoView ) } }catc h( ) { } }  }va  e  =nul ;i f  a=  = ) { e  =e e }els e { e  =e r  }G(  )  ;va  G  =functio n( )  {setTimeout(  ,  )  ;va  W  =functio n( ) {i f(e.typ  e=  ="touchend  "|  |e.typ  e=  ="click ) { v = e  }  ;va  X  =functio n ) {i f( )  {setTimeout(functio n( )  {return functio n )  {va  t  =functio n(  ,  , )  {va  r  =new Event( ,  {bubble  :tru  ,cancelabl  :tru  e} ;i f  e=  ="click )  {r.client X  =  ;r.client Y = n }els e  {r.touche s  =  {client  :  ,client :  n ]  }retur   r  ;var  ;i f(e.typ  e=  ="touchend )  {va  r  =e.changedTouches[0 ; n  =document.elementFromPoint(r.client  ,r.clientY  ;n.dispatchEvent(t("touchstart"  ,r.client  ,r.clientY  ;n.dispatchEvent(t("touchend"  ,r.client  ,r.clientY  ;n.dispatchEvent(t("click"  ,r.client  ,r.client ) }else i f(e.typ e=  ="click" ) { n  =document.elementFromPoint(e.client  ,e.clientY  ;n.dispatchEvent(t("click"  ,e.client  ,e.client ) }  }}(v  ,150 ; v  =nul l  }}  ;va  K  =functio n( ) {i f(e.tagNam  e=  ="SCRIPT  "&  &!e.hasAttribute("data-nitro-for-id  )&  &!e.hasAttribute("nitro-document-write  )|  |e.tagNam  e=  ="IMG  "&  &(e.hasAttribute("src  )|  |e.hasAttribute("srcset"  )|  |e.tagNam  e=  ="IFRAME  "&  &e.hasAttribute("src  )|  |e.tagNam  e=  ="LINK  "&  &e.hasAttribute("href  )&  &e.hasAttribute("rel  )&  &e.getAttribute("rel )= ="stylesheet )  {va  t  =" ;switc h(e.tagNam ) {cas e"LINK" : t  =e.hre  ;brea ;cas e"IMG" :i f(I.indexOf( )  >- )retur ; t  =e.srcse  t|  |e.sr  ;brea ;default : t  =e.sr ;brea  k }va  n  =e.getAttribute("type" ;i f(  t&  &e.tagNam  e!= ="SCRIPT )retur ;i f((e.tagNam  e=  ="IMG  "|  |e.tagNam  e=  ="LINK  )&  &(t.indexOf("data:  )== =  0|  |t.indexOf("blob:  )== =0)  )retur ;i f(e.tagNam  e=  ="SCRIPT  "& &  n& &  n!= ="text/javascript  "& &  n!= ="application/javascript ) {i f  n!= ="module  "|  |! )retur n }i f(e.tagNam  e== ="SCRIPT ) {i f(I.indexOf( )  >- )retur ;i f(e.noModul  e&  & ) {retur n }i f(!e.sr ) {i f(e.textContent.lengt h  > )  {e.textConten  t+ ="\n;if(document.currentScript.nitroTimeout) {clearTimeout(document.currentScript.nitroTimeout);}; setTimeout(function() { this.dispatchEvent(new Event('load')); }.bind(document.currentScript), 0); " }els e {retur n } }els e {  }I.push( ) }i f(!e.hasOwnProperty("nitroTimeout" )  {b+  ;e.addEventListener("load  ,  ,true  ;e.addEventListener("error  ,  ,true  ;e.addEventListener("nitroTimeout  ,  ,true  ;e.nitroTimeou t  =setTimeout(functio n )  {console.log("Resource timed out  ,e)  ;e.dispatchEvent(new Event("nitroTimeout"  )  ,5e ) }  }  ;va  Q  =functio n( ) {i f(e.hasOwnProperty("nitroTimeout  )&  &e.nitroTimeou )  {clearTimeout(e.nitroTimeout  ;e.nitroTimeou t  =nul  ;e.dispatchEvent(new Event("nitroTimeout" )  }  ;document.documentElement.addEventListener("load  ,functio n( )  {i f(e.target.tagNam e=  ="SCRIPT  "|  |e.target.tagNam e=  ="IMG" )  {I.push(e.targe ) }}  ,true  ;document.documentElement.addEventListener("error  ,functio n( )  {i f(e.target.tagNam e=  ="SCRIPT  "|  |e.target.tagNam e=  ="IMG" )  {I.push(e.targe ) }}  ,true  ;va  J  =["appendChild  ,"replaceChild  ,"insertBefore  ,"prepend  ,"append  ,"before  ,"after  ,"replaceWith  ,"insertAdjacentElement"  ;va  $  =functio n )  {J.forEach(functio n( )  {HTMLElement.prototype["og "  + ]  =HTMLElement.prototype[e]  ;HTMLElement.prototype[ ]  =functio n(... ) {i f(this.parentNod  e|  |thi  s== =document.documentElemen ) {switc h( ) {cas e"replaceChild" :cas e"insertBefore"  :t.pop(  ;brea ;cas e"insertAdjacentElement"  :t.shift( ;brea  k }t.forEach(functio n( )  {i f(! )return  ;i f(e.tagNam e=  ="SCRIPT" )  {K( ) }els e {i f(e.childre  n&  &e.children.lengt h  > )  {e.querySelectorAll("script").forEach( ) }  }} ) }return this["og "  +e].apply(thi  ,argument ) }} )  ;va  V  =functio n )  {J.forEach(functio n( )  {HTMLElement.prototype[ ]  =HTMLElement.prototype["og "  +  ]  )  ;va  z  =async functio n ) {i f( )  {ec(d  ;ec(W ;i f( )  {clearTimeout(l ; l  =nul l } }i f  N== = ) { w  =tru ;retur n }else i f  N== = ) { N  =- 1  }n.startedScriptLoadin g  =tru  ;Object.defineProperty(documen  ,"readyState ,  {ge  :functio n )  {return n.documentReadyStat  e  ,se  :functio n ) {  }}  ;va  e  =document.documentElemen  ;va  t =  {attribute  :tru  ,attributeFilte  :["src"  ,childLis  :tru  ,subtre  :tru  e ; L  =new MutationObserver(functio n(  , )  {e.forEach(functio n( )  {i f(e.typ e=  ="childList  "&  &e.addedNodes.lengt h  > )  {e.addedNodes.forEach(functio n( )  {i f(!document.documentElement.contains(e) )  {retur n }i f(e.tagNam  e=  ="IMG  "|  |e.tagNam  e=  ="IFRAME  "|  |e.tagNam  e=  ="LINK )  {K( ) }} ) }i f(e.typ  e=  ="childList  "&  &e.removedNodes.lengt h  > )  {e.removedNodes.forEach(functio n( )  {i f(e.tagNam e=  ="IFRAME  "|  |e.tagNam e=  ="LINK" )  {Q( )  }} ) }i f(e.typ  e=  ="attributes )  {va  t  =e.targe ;i f(!document.documentElement.contains(t ) {retur n }i f(t.tagNam  e=  ="IFRAME  "|  |t.tagNam  e=  ="LINK  "|  |t.tagNam  e=  ="IMG  "|  |t.tagNam  e=  ="SCRIPT )  {K( ) } }} )}  ;L.observe(  ,t  ;$(  ;await Promise.all(O  ;va  r  =E.shift(  ;va  i  =nul  ;va  a  =fals ;whil e( )  {var   ;va  u  =JSON.parse(atob(r.meta)  ;va  s  =u.dela ;i f(r.typ  e=  ="inline )  {va  f  =document.getElementById(r.id ;i f( )  {f.remove ) }els e { r  =E.shift( ;continu e } c  =_(f ;i f  c== =fals ) { r  =E.shift( ;continu e } }els e { c  =r.sr c }i f(  a&  &r.typ e!  ="inline  "&  &(typeof u.attributes.asyn c!  ="undefined  "|  |typeof u.attributes.defe r!  ="undefined") ) {i f  i== =nul ) { i = r }else i f  i== = ) { a  =tru e }i f(! )  {E.push(r ; r  =E.shift( ;continu e }  }va  v  =document.createElement("script"  ;v.sr c  =  ;v.setAttribute("data-nitro-for-id  ,r.id ;fo r(var m in u.attributes ) {tr y {i f(u.attributes[  ]== =fals )  {v.setAttribute(  ," ) }els e  {v.setAttribute(  ,u.attributes[m ) } }catc h( )  {console.log("Error while setting script attribute  ,  , ) }  }v.asyn c  =fals ;i f(u.canonicalLin k!  =" )  {  e= >  {Object.defineProperty(  ,"src ,  {ge  :functio n )  {return e.canonicalLin  k  ,se  :functio n ) {  }  )})( ) }i f( )  {setTimeout((functio n(  , )  {var  n  =document.querySelector("[data-nitro-marker-id=' " + t  +"']")  ;i f( )  {n.after( ) }els e  {document.head.appendChild( ) }}).bind(nul  ,  ,r.id  ,s ) }els e  {v.addEventListener("load  ,H  ;v.addEventListener("error  ,H ;i f(!v.noModul  e|  |! )  { y+ +  }va  p  =document.querySelector("[data-nitro-marker-id=' "  +r.i d  +"']" ;i f( )  {G(functio n(  , )  {return functio n )  {e.after( )  }}(  ,v ) }els e  {G(functio n( )  {return functio n )  {document.head.appendChild( )  }}(v ) } } r  =E.shift ) }  ;va  Z  =functio n )  {va  e  =document.getElementById("nitro-deferred-styles"  ;va  t  =document.createElement("div"  ;t.innerHTM L  =e.textConten  ;retur   t  ;var e e  =async functio n( ) {isPreloa d =  e&  &e.typ  e=  ="NitroPreload ;i f(!isPreloa ) { N  =- ; p  =fals ;i f( )  {ec(d  ;ec(W ;i f( )  {clearTimeout(l ; l  =nul l } } }i f  g== =fals )  {va  t  =Z(  ;le  e  =t.querySelectorAll('style,link[rel="stylesheet"]' ; g  =e.lengt ;i f( )  {le  e  =document.getElementById("nitro-deferred-styles-marker"  ;e.replaceWith.apply(  ,t.childNode ) }else i f(isPreloa )  {G(e ) }els e  {eo ) } }else i f  g== =  0&  &!isPreloa )  {eo )  }  ;var e t  =functio n )  {va  e  =Z(  ;va  t  =e.childNode  ;var   ;va  r  =[ ;fo r(va  i  = ; i  <t.lengt  ;i++ ) { n  =t[i ;i f(n.hre )  {r.push(n.hre ) }  }va  o  ="css-preload  ;j(  ,functio n( )  {ee(new Event("NitroPreload"  )} ;i f(r.lengt )  {D.postMessage  {cm  :"RESOURCE_PRELOAD  ,resource  :  ,requestI :  o ) }els e  {G(functio n )  {B(  ) ) }  ;var e n  =functio n ) {i f  N== =- )retur ; N  =  ;va  e  =[  ;var   , ;fo r(va  r  = ; r  <E.lengt  ;r++ ) { t  =E[r ;i f(t.typ e!  ="inline ) {i f(t.sr ) { n  =JSON.parse(atob(t.meta) ;i f(n.dela )continu ;i f(n.attributes.typ  e&  &n.attributes.typ  e=  ="module  "&  &! )continu  ;e.push(t.sr ) } } }i f(e.lengt )  {va  i  ="js-preload  ;j(  ,functio n( ) { N =2  ;i f( )  {G( )  }}  ;D.postMessage  {cm  :"RESOURCE_PRELOAD  ,resource  :  ,requestI :  i )  }  ;var e r  =functio n ) {whil e(A.lengt ) {styl e  =A.shift( ;i f(style.hasAttribute("nitropack-onload" )  {style.setAttribute("onload  ,style.getAttribute("nitropack-onload")  ;G(functio n( )  {return functio n )  {e.dispatchEvent(new Event("load" )  }}(style ) } }whil e(P.lengt ) {styl e  =P.shift( ;i f(style.hasAttribute("nitropack-onerror" )  {style.setAttribute("onerror  ,style.getAttribute("nitropack-onerror")  ;G(functio n( )  {return functio n )  {e.dispatchEvent(new Event("error" )  }}(style ) }  }  ;var e i  =functio n ) {i f(! ) {i f( )  {G(functio n )  {var  e  =document.getElementById("nitro-critical-css")  ;i f( )  {e.remove )  } ) } C  =tru ;onStylesLoadEven t  =new Event("NitroStylesLoaded"  ;onStylesLoadEvent.isNitroPac k  =tru  ;window.dispatchEvent(onStylesLoadEven )  }  ;var e o  =functio n ) {i f  a=  = )  {G( ) }els e  {er )  }  ;var e a  =functio n( )  {s.forEach(functio n( )  {document.addEventListener(  ,  ,tru  )  )  ;var e c  =functio n( )  {s.forEach(functio n( )  {document.removeEventListener(  ,  ,tru  )  ) ;retur n  {setAutoRemoveCriticalCs :functio n( ) { i =  e}  ,registerScrip :functio n(  ,  , )  {E.push  {typ  :"remote  ,sr  :  ,i  :  ,met :  n  )}  ,registerInlineScrip :functio n(  , )  {E.push  {typ  :"inline  ,i  :  ,met :  t  )}  ,registerStyl :functio n(  ,  , )  {h.push  {hre  :  ,re  :  ,medi :  n  )}  ,onLoadStyl :functio n( )  {A.push(e ;i f  g!= =fals  e&  &- g= = )  {G(ei ;i f( ) { p  =fals e }els e  {eo ) }  }}  ,onErrorStyl :functio n( )  {P.push(e ;i f  g!= =fals  e&  &- g= = )  {G(ei ;i f( ) { p  =fals e }els e  {eo ) }  }}  ,loadJ :functio n(  , ) {i f(!e.sr )  {va  n  =_(e ;i f  n!= =fals )  {e.sr c  =  ;e.textConten t  =" " } }i f( )  {G(functio n(  , )  {return functio n )  {e.after( )  }}(  ,e ) }els e  {G(functio n( )  {return functio n )  {document.head.appendChild( )  }}(e )  }}  ,loadQueuedResource :async functio n )  {window.dispatchEvent(new Event("NitroBootStart") ;i f( )  {clearTimeout(f ; f  =nul l  }window.removeEventListener("load  ,e.loadQueuedResources ; d =  a= = 1 ? z  :e ;i f(  o|  | )  {G( ) }els e {i f(navigator.userAgent.indexOf(" Edge/  )=  =- )  {et(  ;j("css-preload  ,e )  }ea(d ;i f( ) {i f( ) { l  =setTimeout(  , ) } }els e { }  }}  ,fontPreloa :functio n( )  {va  t  ="critical-fonts  ;j(  ,functio n( )  {document.getElementById("nitro-critical-fonts").typ e ="text/css  "}  ;D.postMessage  {cm  :"RESOURCE_PRELOAD  ,resource  :  ,requestI :  t  )}  ,boo :functio n ) {i f( )retur ; t  =tru ; T  =typeof NPS  H!= ="undefined  "&  &NPSH.isScrolled(  ;le  n  =document.prerenderin ;i f(location.has  h| |  T|  | ) { o  =fals e } s  =m.default.concat(m.touch ; f  =setTimeout(e.loadQueuedResource  ,1500  ;ea(W ;i f( )  {e.loadQueuedResources ) }els e  {window.addEventListener("load  ,e.loadQueuedResource )  }}  ,addPrerequisit :functio n( )  {O.push( ) } }}(  ;var   , ; n = r  =functio n )  {va  t  =document.writ ;retur n  {documentWrit :functio n(  , ) {i f  n&  &n.hasAttribute("nitro-exclude" )  {return t.call(documen  , )  }va  i  =nul ;i f(n.documentWriteContaine ) { i  =n.documentWriteContaine r }els e { i  =document.createElement("span"  ;n.documentWriteContaine r = i  }va  o  =nul ;i f( ) {i f(n.hasAttribute("data-nitro-for-id" ) { o  =document.querySelector('template[data-nitro-marker-id=" '  +n.getAttribute("data-nitro-for-id )  +'"] ) }els e { o = n }  }i.innerHTM  L+ =  ;i.querySelectorAll("script").forEach(functio n( )  {e.setAttribute("nitro-document-write  ,"  )} ;i f(!i.parentNod ) {i f( )  {o.parentNode.insertBefore(  , ) }els e  {document.body.appendChild( ) }  }va  a  =document.createElement("span"  ;a.innerHTM L  =  ;va  c  =a.querySelectorAll("script" ;i f(c.lengt )  {c.forEach(functio n( )  {var  n  =t.getAttributeNames()  ;var  r  =document.createElement("script")  ;n.forEach(functio n( )  {r.setAttribute(  ,t.getAttribute(e  )})  ;r.asyn c =false  ;i f(!t.sr c&  &t.textConten )  {r.textConten t  =t.textConten t  }e.loadJs(  ,  )} )  }}  ,TrustLog :functio n(  , )  {va  n  =document.getElementById(e  ;va  r  =document.createElement("img"  ;r.sr c  =  ;n.parentNode.insertBefore(  ,  )}  ,documentReadyStat  :"loading  ,ogReadyState  :document.readyStat  ,startedScriptLoading  :fals  ,loadScriptDelayed :functio n(  , )  {setTimeout(functio n )  {var  t  =document.createElement("script")  ;t.sr c =e  ;document.head.appendChild(  )  , ) } }}(  ;document.writ e  =functio n( )  {n.documentWrite(document.currentScrip  ,  )  ;document.writel n  =functio n( )  {n.documentWrite(document.currentScrip , e  +"\n  )  ;window.NPR L  =  ;window.NitroResourceLoade r  =  ;window.NP h  =  ;window.NitroPackHelpe r = r} )();</script>
+        id="nprl">(() => { if (window.NPRL != undefined) return; (function (e) { var t = e.prototype; t.after || (t.after = function () { var e, t = arguments, n = t.length, r = 0, i = this, o = i.parentNode, a = Node, c = String, u = document; if (o !== null) { while (r < n) { (e = t[r]) instanceof a ? (i = i.nextSibling) !== null ? o.insertBefore(e, i) : o.appendChild(e) : o.appendChild(u.createTextNode(c(e))); ++r } } }) })(Element); var e, t; e = t = function () { var t = false; var r = window.URL || window.webkitURL; var i = true; var o = false; var a = 2; var c = null; var u = null; var d; var s; var l = null; var f = null; var v = null; var m = { touch: ["touchmove", "touchend"], default: ["mousemove", "click", "keydown", "wheel"] }; var p = true; var h = []; var g = false; var E = []; var y = 0; var b = 0; var w = false; var N = 0; var L = null; var S = false; var R = false; var T = false; var O = []; var A = []; var P = []; var I = []; var C = false; var k = {}; var M = "noModule" in HTMLScriptElement.prototype; var x = requestAnimationFrame || mozRequestAnimationFrame || webkitRequestAnimationFrame || msRequestAnimationFrame; function j(e, t) { if (!k[e]) { k[e] = [] } k[e].push(t) } function B(e, t) { if (k[e]) { var n = 0, r = k[e]; for (var n = 0; n < r.length; n++) { r[n].call(this, t) } } } function q() { (function (e, t) { var r = null; var i = function (e) { r(e) }; var o = null; var a = {}; var c = null; var u = null; var d = 0; e.addEventListener(t, function (r) { if (["load", "DOMContentLoaded"].indexOf(t) != -1) { if (u) { G(function () { e.triggerNitroEvent(t) }) } c = true } else if (t == "readystatechange") { d++; n.ogReadyState = d == 1 ? "interactive" : "complete"; if (u && u >= d) { n.documentReadyState = n.ogReadyState; G(function () { e.triggerNitroEvent(t) }) } } }); e.addEventListener(t + "Nitro", function (e) { if (["load", "DOMContentLoaded"].indexOf(t) != -1) { if (!c) { e.preventDefault(); e.stopImmediatePropagation() } else { } u = true } else if (t == "readystatechange") { u = n.documentReadyState == "interactive" ? 1 : 2; if (d < u) { e.preventDefault(); e.stopImmediatePropagation() } } }); switch (t) { case "load": o = "onload"; break; case "readystatechange": o = "onreadystatechange"; break; case "pageshow": o = "onpageshow"; break; default: o = null; break }if (o) { Object.defineProperty(e, o, { get: function () { return r }, set: function (n) { if (typeof n !== "function") { r = null; e.removeEventListener(t + "Nitro", i) } else { if (!r) { e.addEventListener(t + "Nitro", i) } r = n } } }) } Object.defineProperty(e, "addEventListener" + t, { value: function (r) { if (r != t || !n.startedScriptLoading || document.currentScript && document.currentScript.hasAttribute("nitro-exclude")) { } else { arguments[0] += "Nitro" } e.ogAddEventListener.apply(e, arguments); a[arguments[1]] = arguments[0] } }); Object.defineProperty(e, "removeEventListener" + t, { value: function (t) { var n = a[arguments[1]]; arguments[0] = n; e.ogRemoveEventListener.apply(e, arguments) } }); Object.defineProperty(e, "triggerNitroEvent" + t, { value: function (t, n) { n = n || e; var r = new Event(t + "Nitro", { bubbles: true }); r.isNitroPack = true; Object.defineProperty(r, "type", { get: function () { return t }, set: function () { } }); Object.defineProperty(r, "target", { get: function () { return n }, set: function () { } }); e.dispatchEvent(r) } }); if (typeof e.triggerNitroEvent === "undefined") { (function () { var t = e.addEventListener; var n = e.removeEventListener; Object.defineProperty(e, "ogAddEventListener", { value: t }); Object.defineProperty(e, "ogRemoveEventListener", { value: n }); Object.defineProperty(e, "addEventListener", { value: function (n) { var r = "addEventListener" + n; if (typeof e[r] !== "undefined") { e[r].apply(e, arguments) } else { t.apply(e, arguments) } }, writable: true }); Object.defineProperty(e, "removeEventListener", { value: function (t) { var r = "removeEventListener" + t; if (typeof e[r] !== "undefined") { e[r].apply(e, arguments) } else { n.apply(e, arguments) } } }); Object.defineProperty(e, "triggerNitroEvent", { value: function (t, n) { var r = "triggerNitroEvent" + t; if (typeof e[r] !== "undefined") { e[r].apply(e, arguments) } } }) })() } }).apply(null, arguments) } q(window, "load"); q(window, "pageshow"); q(window, "DOMContentLoaded"); q(document, "DOMContentLoaded"); q(document, "readystatechange"); try { var D = new Worker(r.createObjectURL(new Blob([document.getElementById("nitro-web-worker").textContent], { type: "text/javascript" }))) } catch (e) { var D = new Worker("data:text/javascript;base64," + btoa(document.getElementById("nitro-web-worker").textContent)) } D.onmessage = function (e) { if (e.data.cmd == "RESOURCE_PRELOAD") { B(e.data.requestId, e) } }; if (typeof document.baseURI !== "undefined") { D.postMessage({ cmd: "SET_BASEURI", uri: document.baseURI }) } var H = function (e) { if (--y == 0) { G(Y) } }; var U = function (e) { e.target.removeEventListener("load", U); e.target.removeEventListener("error", U); e.target.removeEventListener("nitroTimeout", U); if (e.type != "nitroTimeout") { clearTimeout(e.target.nitroTimeout) } if (--b == 0 && y == 0) { G(F) } }; var _ = function (e) { var t = e.textContent; try { var n = r.createObjectURL(new Blob([t.replace(/^(?:< !-- ) ?(.*?)(?:- ->)?$/gm, "$1")], { type: "text/javascript " })) }catc h(e) { var n = "data:text/javascript;base64, " + btoa(t.replace(/^(?:< !-- ) ?(.*?)(?:- ->)?$/g, "$1")) }retur   n;va  Y = functio n ) { n.documentReadyStat e = "interactive  ;document.triggerNitroEvent("readystatechange"  ;document.triggerNitroEvent("DOMContentLoaded" ;i f(window.pageYOffse  t|  |window.pageXOffse )  {window.dispatchEvent(new Event("scroll" ) } R  =tru  ;G(functio n )  {i f  b=  = )  {G( ) }G(  )  )  ;va  F  =functio n ) {i f(  R|  | )retur ; S  =tru  ;L.disconnect(  ;V(  ;n.documentReadyStat e  ="complete; document.triggerNitroEvent("readystatechange"  ; window.triggerNitroEvent("load  ,document  ;window.triggerNitroEvent("pageshow, document ;i f(window.pageYOffse  t |  | window.pageXOffse  t |  | location.has)  {le  e = typeof history.scrollRestoratio n != ="undefined  " &  & history.scrollRestoratio  n =  = "auto ;i f  e&  &typeof NPS  H!= ="undefined  "&  &NPSH.getScrollPos ) >  0&  &window.pageYOffse t  >document.documentElement.clientHeigh t  *. )  {window.scrollTo(  ,NPSH.getScrollPos( ) }else i f(location.has ) {tr y  {le  e  =document.querySelector(location.hash ;i f( )  {e.scrollIntoView ) } }catc h( ) { } }  }va  e  =nul ;i f  a=  = ) { e  =e e }els e { e  =e r  }G(  )  ;va  G  =functio n( )  {setTimeout(  ,  )  ;va  W  =functio n( ) {i f(e.typ  e=  ="touchend  "|  |e.typ  e=  ="click ) { v = e };va  X = functio n ) {i f()  { setTimeout(functio n()  { return functio n )  {va  t = functio n(  ,  ,)  {va  r = new Event( , { bubble: tru, cancelabl: tru  e } ;i f  e =  = "click )  {r.client X  =  ;r.client Y = n }els e  {r.touche s  =  {client  :  ,client :  n ]  }retur   r  ;var  ;i f(e.typ  e=  ="touchend ) {va  r = e.changedTouches[0 ; n = document.elementFromPoint(r.client, r.clientY  ; n.dispatchEvent(t("touchstart", r.client, r.clientY  ; n.dispatchEvent(t("touchend", r.client, r.clientY  ; n.dispatchEvent(t("click", r.client, r.client) }else i f(e.typ e =  = "click") { n = document.elementFromPoint(e.client, e.clientY  ; n.dispatchEvent(t("click", e.client, e.client) } } } (v, 150 ; v = nul l } };va  K = functio n() {i f(e.tagNam  e =  = "SCRIPT  " &  & !e.hasAttribute("data-nitro-for-id  )&  &!e.hasAttribute("nitro - document - write) |  | e.tagNam  e =  = "IMG  " &  & (e.hasAttribute("src  )|  |e.hasAttribute("srcset"  )|  |e.tagNam  e=  ="IFRAME  "&  &e.hasAttribute("src) |  | e.tagNam  e =  = "LINK  " &  & e.hasAttribute("href  )&  &e.hasAttribute("rel) &  & e.getAttribute("rel )= ="stylesheet)  { va  t  =" ;switc h(e.tagNam ) {cas e"LINK" : t  =e.hre  ;brea ;cas e"IMG" :i f(I.indexOf( )  >- )retur ; t  =e.srcse  t|  |e.sr  ;brea ;default : t  =e.sr ;brea  k }va  n  =e.getAttribute("type" ;i f(  t&  &e.tagNam  e!= ="SCRIPT )retur;i f((e.tagNam  e =  = "IMG  " |  | e.tagNam  e =  = "LINK  )&  &(t.indexOf("data: ) == =  0 |  | t.indexOf("blob:  )== =0)  )retur ;i f(e.tagNam  e=  ="SCRIPT  "& &  n& &  n!= ="text / javascript  "& &  n!= ="application / javascript) {i f  n != ="module  " |  | ! )retur n }i f(e.tagNam  e == ="SCRIPT ) {i f(I.indexOf( )  >- )retur ;i f(e.noModul  e&  & ) {retur n }i f(!e.sr ) {i f(e.textContent.lengt h  > )  {e.textConten  t+ ="\n; if (document.currentScript.nitroTimeout) { clearTimeout(document.currentScript.nitroTimeout); }; setTimeout(function () { this.dispatchEvent(new Event('load')); }.bind(document.currentScript), 0); " }els e {retur n } }els e {  }I.push( ) }i f(!e.hasOwnProperty("nitroTimeout" )  {b+  ;e.addEventListener("load,  , true; e.addEventListener("error  ,  ,true  ;e.addEventListener("nitroTimeout,  , true  ; e.nitroTimeou t = setTimeout(functio n)  { console.log("Resource timed out  ,e)  ;e.dispatchEvent(new Event("nitroTimeout"  )  ,5e ) }  }  ;va  Q  =functio n( ) {i f(e.hasOwnProperty("nitroTimeout) &  & e.nitroTimeou ) { clearTimeout(e.nitroTimeout  ; e.nitroTimeou t = nul; e.dispatchEvent(new Event("nitroTimeout")  }; document.documentElement.addEventListener("load  ,functio n( )  {i f(e.target.tagNam e=  ="SCRIPT  "|  |e.target.tagNam e=  ="IMG" )  {I.push(e.targe ) }}  ,true  ;document.documentElement.addEventListener("error, functio n()  { i f(e.target.tagNam e=  = "SCRIPT  " |  | e.target.tagNam e=  = "IMG" )  { I.push(e.targe) } }  , true;va  J = ["appendChild  ,"replaceChild, "insertBefore  ,"prepend, "append  ,"before, "after  ,"replaceWith, "insertAdjacentElement"  ;va  $ = functio n ) { J.forEach(functio n()  { HTMLElement.prototype["og " + ] = HTMLElement.prototype[e]  ; HTMLElement.prototype[] = functio n(... ) {i f(this.parentNod  e |  | thi  s == =document.documentElemen) {switc h() {cas e"replaceChild" :cas e"insertBefore"  : t.pop(  ; brea;cas e"insertAdjacentElement"  : t.shift( ;brea  k } t.forEach(functio n()  { i f(!)return  ; i f(e.tagNam e=  = "SCRIPT" )  { K() }els e {i f(e.childre  n &  & e.children.lengt h > )  { e.querySelectorAll("script").forEach() } } } ) } return this["og " + e].apply(thi, argument) } } );va  V = functio n ) { J.forEach(functio n()  { HTMLElement.prototype[] = HTMLElement.prototype["og " +  ]  );va  z = async functio n ) {i f()  { ec(d  ; ec(W ;i f()  { clearTimeout(l ; l = nul l } }i f  N == = ) { w = tru;retur n }else i f  N == = ) { N = - 1 } n.startedScriptLoadin g = tru; Object.defineProperty(documen, "readyState ,  {ge  :functio n )  {return n.documentReadyStat  e  ,se  :functio n ) {  }}  ;va  e  =document.documentElemen  ;va  t =  {attribute  :tru  ,attributeFilte  :["src"  ,childLis  :tru  ,subtre  :tru  e ; L  =new MutationObserver(functio n(  , )  {e.forEach(functio n( )  {i f(e.typ e=  ="childList  "&  &e.addedNodes.lengt h  > )  {e.addedNodes.forEach(functio n( )  {i f(!document.documentElement.contains(e) )  {retur n }i f(e.tagNam  e=  ="IMG  "|  |e.tagNam  e=  ="IFRAME  "|  |e.tagNam  e=  ="LINK)  { K() } } ) }i f(e.typ  e =  = "childList  " &  & e.removedNodes.lengt h > )  { e.removedNodes.forEach(functio n()  { i f(e.tagNam e=  = "IFRAME  " |  | e.tagNam e=  = "LINK" )  { Q() } } ) }i f(e.typ  e =  = "attributes )  {va  t  =e.targe ;i f(!document.documentElement.contains(t ) {retur n }i f(t.tagNam  e=  ="IFRAME  "|  |t.tagNam  e=  ="LINK  "|  |t.tagNam  e=  ="IMG  "|  |t.tagNam  e=  ="SCRIPT)  { K() } } } ) }  ; L.observe(  , t  ; $(  ; await Promise.all(O  ;va  r = E.shift(  ;va  i = nul;va  a = fals;whil e()  { var ;va  u = JSON.parse(atob(r.meta)  ;va  s = u.dela;i f(r.typ  e =  = "inline )  {va  f  =document.getElementById(r.id ;i f( )  {f.remove ) }els e { r  =E.shift( ;continu e } c  =_(f ;i f  c== =fals ) { r  =E.shift( ;continu e } }els e { c  =r.sr c }i f(  a&  &r.typ e!  ="inline  "&  &(typeof u.attributes.asyn c!  ="undefined  "|  |typeof u.attributes.defe r!  ="undefined") ) {i f  i== =nul ) { i = r }else i f  i== = ) { a  =tru e }i f(! )  {E.push(r ; r  =E.shift( ;continu e }  }va  v  =document.createElement("script"  ;v.sr c  =  ;v.setAttribute("data - nitro -for-id, r.id; fo r(var m in u.attributes ) {tr y {i f(u.attributes[] == =fals)  { v.setAttribute(  , " ) }els e  {v.setAttribute(  ,u.attributes[m ) } }catc h( )  {console.log("Error while setting script attribute,  , ) } } v.asyn c = fals;i f(u.canonicalLin k! = " )  {  e= >  {Object.defineProperty(  ,"src, { ge: functio n )  { return e.canonicalLin  k, se  :functio n ) { }  ) }) ( ) }i f()  { setTimeout((functio n(  ,)  { var  n = document.querySelector("[data-nitro-marker-id=' " + t + "']")  ; i f() { n.after() }els e  { document.head.appendChild() }}).bind(nul,  , r.id, s) }els e  { v.addEventListener("load  ,H  ;v.addEventListener("error, H ;i f(!v.noModul  e |  | ! )  { y + +  }va  p = document.querySelector("[data-nitro-marker-id=' " + r.i d + "']" ;i f()  { G(functio n(  ,)  { return functio n )  { e.after() } } (  , v) }els e  { G(functio n()  { return functio n )  { document.head.appendChild() } } (v) } } r = E.shift ) };va  Z = functio n ) {va  e = document.getElementById("nitro-deferred-styles"  ;va  t = document.createElement("div"  ; t.innerHTM L = e.textConten;retur   t; var e e = async functio n() {isPreloa d = e &  & e.typ  e =  = "NitroPreload ;i f(!isPreloa ) { N  =- ; p  =fals ;i f( )  {ec(d  ;ec(W ;i f( )  {clearTimeout(l ; l  =nul l } } }i f  g== =fals )  {va  t  =Z(  ;le  e  =t.querySelectorAll('style,link[rel="stylesheet"]' ; g  =e.lengt ;i f( )  {le  e  =document.getElementById("nitro - deferred - styles - marker"  ;e.replaceWith.apply(  ,t.childNode ) }else i f(isPreloa )  {G(e ) }els e  {eo ) } }else i f  g== =  0&  &!isPreloa )  {eo )  }  ;var e t  =functio n )  {va  e  =Z(  ;va  t  =e.childNode  ;var   ;va  r  =[ ;fo r(va  i  = ; i  <t.lengt  ;i++ ) { n  =t[i ;i f(n.hre )  {r.push(n.hre ) }  }va  o  ="css - preload; j(  , functio n()  { ee(new Event("NitroPreload")};i f(r.lengt)  { D.postMessage  { cm: "RESOURCE_PRELOAD  ,resource  :  ,requestI :  o ) }els e  {G(functio n )  {B(  ) ) }  ;var e n  =functio n ) {i f  N== =- )retur ; N  =  ;va  e  =[  ;var   , ;fo r(va  r  = ; r  <E.lengt  ;r++ ) { t  =E[r ;i f(t.typ e!  ="inline ) {i f(t.sr) { n = JSON.parse(atob(t.meta) ;i f(n.dela)continu;i f(n.attributes.typ  e &  & n.attributes.typ  e =  = "module  " &  & ! )continu; e.push(t.sr) } } }i f(e.lengt)  {va  i = "js-preload  ;j(  ,functio n( ) { N =2  ;i f( )  {G( )  }}  ;D.postMessage  {cm  :"RESOURCE_PRELOAD, resource  :  , requestI:  i ) }; var e r = functio n ) { whil e(A.lengt) {styl e = A.shift( ;i f(style.hasAttribute("nitropack-onload")  { style.setAttribute("onload  ,style.getAttribute("nitropack - onload")  ;G(functio n( )  {return functio n )  {e.dispatchEvent(new Event("load" )  }}(style ) } }whil e(P.lengt ) {styl e  =P.shift( ;i f(style.hasAttribute("nitropack - onerror" )  {style.setAttribute("onerror, style.getAttribute("nitropack-onerror")  ; G(functio n()  { return functio n )  { e.dispatchEvent(new Event("error")  } } (style) } }; var e i = functio n ) { i f(! ) {i f()  { G(functio n)  { var e = document.getElementById("nitro-critical-css");i f()  { e.remove ) } ) } C = tru;onStylesLoadEven t = new Event("NitroStylesLoaded"  ; onStylesLoadEvent.isNitroPac k = tru; window.dispatchEvent(onStylesLoadEven) }; var e o = functio n ) { i f  a =  = )  { G( ) }els e  {er ) }; var e a = functio n()  {
+                s.forEach(functio n()  { document.addEventListener(  ,  , tru)  ); var e c = functio n()  {
+                    s.forEach(functio n()  { document.removeEventListener(  ,  , tru)  );retur n  { setAutoRemoveCriticalCs:functio n() { i = e }  , registerScrip:functio n(  ,  ,)  { E.push  { typ: "remote  ,sr  :  ,i  :  ,met :  n  )}  ,registerInlineScrip :functio n(  , )  {E.push  {typ  :"inline, i  :  , met:  t  ) }  , registerStyl:functio n(  ,  ,)  { h.push  { hre:  , re  :  , medi:  n  ) }  , onLoadStyl:functio n()  { A.push(e ;i f  g != =fals  e &  & - g= = ) { G(ei ;i f() { p = fals e }els e  {eo ) } } }  , onErrorStyl:functio n()  { P.push(e ;i f  g != =fals  e &  & - g= = ) { G(ei ;i f() { p = fals e }els e  {eo ) } } }  , loadJ:functio n(  ,) {i f(!e.sr)  {va  n = _(e ;i f  n != =fals ) { e.sr c =  ; e.textConten t = " " } }i f()  { G(functio n(  ,)  { return functio n )  { e.after() } } (  , e) }els e  { G(functio n()  { return functio n )  { document.head.appendChild() } } (e) } }  , loadQueuedResource:async functio n ) { window.dispatchEvent(new Event("NitroBootStart") ;i f()  { clearTimeout(f ; f = nul l } window.removeEventListener("load  ,e.loadQueuedResources ; d =  a= = 1 ? z  :e ;i f(  o|  | )  {G( ) }els e {i f(navigator.userAgent.indexOf(" Edge /  ) =  = - ) { et(  ; j("css-preload  ,e )  }ea(d ;i f( ) {i f( ) { l  =setTimeout(  , ) } }els e { }  }}  ,fontPreloa :functio n( )  {va  t  ="critical - fonts  ; j(  , functio n()  { document.getElementById("nitro-critical-fonts").typ e ="text/css  " }  ; D.postMessage  { cm: "RESOURCE_PRELOAD  ,resource  :  ,requestI :  t  )}  ,boo :functio n ) {i f( )retur ; t  =tru ; T  =typeof NPS  H!= ="undefined  "&  &NPSH.isScrolled(  ;le  n  =document.prerenderin ;i f(location.has  h| |  T|  | ) { o  =fals e } s  =m.default.concat(m.touch ; f  =setTimeout(e.loadQueuedResource  ,1500  ;ea(W ;i f( )  {e.loadQueuedResources ) }els e  {window.addEventListener("load, e.loadQueuedResource ) } }  , addPrerequisit:functio n()  { O.push() } } } (  ; var   , ; n = r = functio n ) {va  t = document.writ;retur n  { documentWrit:functio n(  ,) {i f  n &  & n.hasAttribute("nitro-exclude")  { return t.call(documen,) }va  i = nul;i f(n.documentWriteContaine) { i = n.documentWriteContaine r }els e { i = document.createElement("span"  ; n.documentWriteContaine r = i }va  o = nul;i f() {i f(n.hasAttribute("data-nitro-for-id") { o  =document.querySelector('template[data-nitro-marker-id=" ' + n.getAttribute("data-nitro-for-id )  +'"]) }els e { o = n }  } i.innerHTM  L + =; i.querySelectorAll("script").forEach(functio n()  { e.setAttribute("nitro-document-write  ,") } ;i f(!i.parentNod) {i f()  { o.parentNode.insertBefore(  ,) }els e  { document.body.appendChild() } }va  a = document.createElement("span"  ; a.innerHTM L =  ;va  c = a.querySelectorAll("script" ;i f(c.lengt)  { c.forEach(functio n()  { var  n = t.getAttributeNames()  ; var  r = document.createElement("script")  ; n.forEach(functio n()  { r.setAttribute(  , t.getAttribute(e)})  ; r.asyn c =false  ; i f(!t.sr c&  & t.textConten)  { r.textConten t = t.textConten t } e.loadJs(  ,) } ) } }  , TrustLog:functio n(  ,)  {va  n = document.getElementById(e  ;va  r = document.createElement("img"  ; r.sr c =  ; n.parentNode.insertBefore(  ,) }  , documentReadyStat: "loading  ,ogReadyState  :document.readyStat  ,startedScriptLoading  :fals  ,loadScriptDelayed :functio n(  , )  {setTimeout(functio n )  {var  t  =document.createElement("script")  ;t.sr c =e  ;document.head.appendChild(  )  , ) } }}(  ;document.writ e  =functio n( )  {n.documentWrite(document.currentScrip  ,  )  ;document.writel n  =functio n( )  {n.documentWrite(document.currentScrip , e  +"\n  ); window.NPR L =  ; window.NitroResourceLoade r =  ; window.NP h =  ; window.NitroPackHelpe r = r } ) ();</script>
     <link rel="stylesheet" onload="NPRL.onLoadStyle(this)" onerror="NPRL.onErrorStyle(this)"
         href="./files/nitro-min-noimport-dfb4241c468d4d7393b45b4e112b67db-stylesheet.css">
     <style id="wp-emoji-styles-inline-css" onload="NPRL.onLoadStyle(this)" onerror="NPRL.onErrorStyle(this)">
@@ -2144,7 +2146,9 @@
                                             data-id="f1d4f27" data-element_type="widget"
                                             data-widget_type="heading.default">
                                             <div class="elementor-widget-container">
-                                                <h2 class="elementor-heading-title elementor-size-default">Venda Imóveis Através de Anúncios Online no Facebook, Instagram e Google Ads e Atraia Clientes Interessados a Qualquer Hora do Dia.</h2>
+                                                <h2 class="elementor-heading-title elementor-size-default">Venda Imóveis
+                                                    Através de Anúncios Online no Facebook, Instagram e Google Ads e
+                                                    Atraia Clientes Interessados a Qualquer Hora do Dia.</h2>
                                             </div>
                                         </div>
                                         <div class="elementor-element elementor-element-91bed2e elementor-widget elementor-widget-text-editor"
@@ -2245,9 +2249,17 @@
                                             data-widget_type="text-editor.default">
                                             <div class="elementor-widget-container">
                                                 <div data-w-id="618b3f80-8312-00e3-2ab2-7b567b9a78c9">
-                                                    <p>Se você busca acelerar suas vendas e não dispõe de tempo para criar e gerenciar seus próprios anúncios online, é fundamental considerar a terceirização desse serviço agora mesmo!</p>
-                                                    <p><b>Está satisfeito com seu faturamento atual?</b>&nbsp;Nosso foco principal é garantir que você tenha um fluxo constante de novos clientes todos os dias, impulsionando seu crescimento de forma contínua.</p>
-                                                    <p>Transforme sua maneira de atrair clientes através de anúncios online e desfrute de mais tempo e recursos para focar no que realmente importa: fechar negócios e expandir seu sucesso imobiliário.</p>
+                                                    <p>Se você busca acelerar suas vendas e não dispõe de tempo para
+                                                        criar e gerenciar seus próprios anúncios online, é fundamental
+                                                        considerar a terceirização desse serviço agora mesmo!</p>
+                                                    <p><b>Está satisfeito com seu faturamento atual?</b>&nbsp;Nosso foco
+                                                        principal é garantir que você tenha um fluxo constante de novos
+                                                        clientes todos os dias, impulsionando seu crescimento de forma
+                                                        contínua.</p>
+                                                    <p>Transforme sua maneira de atrair clientes através de anúncios
+                                                        online e desfrute de mais tempo e recursos para focar no que
+                                                        realmente importa: fechar negócios e expandir seu sucesso
+                                                        imobiliário.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -2276,7 +2288,8 @@
                                             data-id="c66cb53" data-element_type="widget"
                                             data-widget_type="heading.default">
                                             <div class="elementor-widget-container">
-                                                <h2 class="elementor-heading-title elementor-size-default">Tenha uma Equipe de Marketing Especializada no Mercado Imobiliário</h2>
+                                                <h2 class="elementor-heading-title elementor-size-default">Tenha uma
+                                                    Equipe de Marketing Especializada no Mercado Imobiliário</h2>
                                             </div>
                                         </div>
                                         <div class="elementor-element elementor-element-d16ef32 elementor-widget elementor-widget-text-editor"
@@ -2284,7 +2297,9 @@
                                             data-widget_type="text-editor.default">
                                             <div class="elementor-widget-container">
                                                 <div data-w-id="618b3f80-8312-00e3-2ab2-7b567b9a78c9">
-                                                    <p>Se você busca leads qualificados interessados nos seus imóveis, nós dominamos a arte de atraí-los através de anúncios e estratégias testadas e aprovadas.</p>
+                                                    <p>Se você busca leads qualificados interessados nos seus imóveis,
+                                                        nós dominamos a arte de atraí-los através de anúncios e
+                                                        estratégias testadas e aprovadas.</p>
                                                     <p>Seu foco será em receber o contato dos clientes e realizar o
                                                         atendimento!</p>
                                                     <p><b>Imagine ter agora:<br></b></p>
@@ -2297,7 +2312,8 @@
                                                         <div data-op3-element-container="">
                                                             <div data-op3-contenteditable="">
                                                                 <ul>
-                                                                    <li>Anúncios potentes que nunca param, trabalhando 24 horas por dia para você.</li>
+                                                                    <li>Anúncios potentes que nunca param, trabalhando
+                                                                        24 horas por dia para você.</li>
                                                                 </ul>
                                                             </div>
                                                         </div>
@@ -2385,8 +2401,8 @@
                         <div class="elementor-element elementor-element-f8abd6f elementor-widget elementor-widget-heading"
                             data-id="f8abd6f" data-element_type="widget" data-widget_type="heading.default">
                             <div class="elementor-widget-container">
-                                <h2 class="elementor-heading-title elementor-size-default">Veja agora como executaremos
-                                    a Gestão de Tráfego para Atrair Mais Clientes</h2>
+                                <h2 class="elementor-heading-title elementor-size-default">Descubra agora como vamos
+                                    revolucionar a Gestão de Tráfego para atrair uma avalanche de novos clientes!</h2>
                             </div>
                         </div>
                         <section
@@ -2413,7 +2429,8 @@
                                             <div class="elementor-widget-container">
                                                 <div data-w-id="618b3f80-8312-00e3-2ab2-7b567b9a78c9">
                                                     <p>Desenvolvemos e executamos estratégias de anúncios online para
-                                                        que você obtenha muito mais clientes</p>
+                                                        atrair uma quantidade significativa de clientes qualificados
+                                                        para o seu negócio.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -2438,8 +2455,9 @@
                                             data-widget_type="text-editor.default">
                                             <div class="elementor-widget-container">
                                                 <div data-w-id="618b3f80-8312-00e3-2ab2-7b567b9a78c9">
-                                                    <p>&nbsp;&nbsp;Vamos atrair seu público e despertar o desejo em seus
-                                                        imóveis através de anúncios de alta qualidade</p>
+                                                    <p>&nbsp;&nbsp;Vamos capturar a atenção do seu público e despertar o
+                                                        desejo pelos seus imóveis através de anúncios de alta qualidade.
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -2470,8 +2488,8 @@
                                             data-widget_type="text-editor.default">
                                             <div class="elementor-widget-container">
                                                 <div data-w-id="618b3f80-8312-00e3-2ab2-7b567b9a78c9">
-                                                    <p>Gerenciaremos as campanhas dos imóveis através do seu Facebook e
-                                                        Instagram</p>
+                                                    <p>Vamos gerenciar as campanhas dos seus imóveis no Facebook e
+                                                        Instagram para alcançar mais clientes interessados.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -2546,11 +2564,11 @@
                                                                                     <div class="op3-text-wrapper">
                                                                                         <div
                                                                                             data-op3-contenteditable="">
-                                                                                            <p>Receba um relatório
-                                                                                                mensal e&nbsp;Feedback
-                                                                                                semanal&nbsp;das
-                                                                                                campanhas&nbsp;através
-                                                                                                do WhatsApp</p>
+                                                                                            <p>Receba mensalmente um
+                                                                                                relatório completo e
+                                                                                                feedback semanal das
+                                                                                                campanhas diretamente
+                                                                                                pelo WhatsApp.</p>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -2766,9 +2784,9 @@
                             data-id="63e2427" data-element_type="widget" data-widget_type="text-editor.default">
                             <div class="elementor-widget-container">
                                 <div data-w-id="618b3f80-8312-00e3-2ab2-7b567b9a78c9">
-                                    <p>Por isso tome sua decisão o quanto antes. Agende uma reunião online e conheça
-                                        mais detalhes do nosso trabalho.&nbsp;</p>
-                                    <p><b>Escolha um dos planos abaixo e fale conosco.</b></p>
+                                    <p>Não perca tempo. Agende já uma reunião online para conhecer mais detalhes do
+                                        nosso trabalho.</p>
+                                    <p><b>Escolha um dos planos abaixo e entre em contato conosco agora mesmo.</b></p>
                                 </div>
                             </div>
                         </div>
@@ -2804,6 +2822,8 @@
                             data-id="0f07fcb" data-element_type="widget" data-widget_type="icon.default">
                             <div class="elementor-widget-container">
                                 <div class="elementor-icon-wrapper">
+                                    <div class="elementor-icon"><i aria-hidden="true"
+                                            class="fab fa-instagram-square"></i></div>
                                     <div class="elementor-icon"> <i aria-hidden="true"
                                             class="fab fa-facebook-square"></i> </div>
                                 </div>
@@ -2819,7 +2839,7 @@
                             data-id="e16e227" data-element_type="widget" data-widget_type="text-editor.default">
                             <div class="elementor-widget-container">
                                 <div data-w-id="618b3f80-8312-00e3-2ab2-7b567b9a78c9">
-                                    <p>Anuncie no Facebook Ads</p>
+                                    <p>Anuncie no Instagram e Facebook Ads</p>
                                 </div>
                             </div>
                         </div>
@@ -2836,11 +2856,11 @@
                                             <div class="elementor-widget-container">
                                                 <div class="elementor-price-table">
                                                     <div class="elementor-price-table__header">
-                                                        <h3 class="elementor-price-table__heading"> PLANO BRONZE </h3>
+                                                        <h3 class="elementor-price-table__heading"> PLANO CORRETOR </h3>
                                                     </div>
                                                     <div class="elementor-price-table__price"> <span
                                                             class="elementor-price-table__currency">R$</span> <span
-                                                            class="elementor-price-table__integer-part"> 1500 </span>
+                                                            class="elementor-price-table__integer-part"> 500 </span>
                                                         <span
                                                             class="elementor-price-table__period elementor-typo-excluded">MENSAL</span>
                                                     </div>
@@ -2848,13 +2868,13 @@
                                                         <li class="elementor-repeater-item-7627cbe">
                                                             <div class="elementor-price-table__feature-inner"> <i
                                                                     aria-hidden="true" class="far fa-check-circle"></i>
-                                                                <span> 3 CAMPANHAS </span>
+                                                                <span> 1 CAMPANHA </span>
                                                             </div>
                                                         </li>
                                                         <li class="elementor-repeater-item-f7b49dc">
                                                             <div class="elementor-price-table__feature-inner"> <i
                                                                     aria-hidden="true" class="far fa-check-circle"></i>
-                                                                <span> CRIAÇÃO DE ARTES E COPY </span>
+                                                                <span> CRIAÇÃO DE COPY </span>
                                                             </div>
                                                         </li>
                                                         <li class="elementor-repeater-item-6858b9d">
@@ -2891,11 +2911,12 @@
                                             <div class="elementor-widget-container">
                                                 <div class="elementor-price-table">
                                                     <div class="elementor-price-table__header">
-                                                        <h3 class="elementor-price-table__heading"> PLANO PRATA </h3>
+                                                        <h3 class="elementor-price-table__heading"> PLANO IMOBILIÁRIA
+                                                        </h3>
                                                     </div>
                                                     <div class="elementor-price-table__price"> <span
                                                             class="elementor-price-table__currency">R$</span> <span
-                                                            class="elementor-price-table__integer-part"> 2250 </span>
+                                                            class="elementor-price-table__integer-part"> 1000 </span>
                                                         <span
                                                             class="elementor-price-table__period elementor-typo-excluded">MENSAL</span>
                                                     </div>
@@ -2903,13 +2924,13 @@
                                                         <li class="elementor-repeater-item-7627cbe">
                                                             <div class="elementor-price-table__feature-inner"> <i
                                                                     aria-hidden="true" class="far fa-check-circle"></i>
-                                                                <span> 5 CAMPANHAS </span>
+                                                                <span> 3 CAMPANHAS </span>
                                                             </div>
                                                         </li>
                                                         <li class="elementor-repeater-item-f7b49dc">
                                                             <div class="elementor-price-table__feature-inner"> <i
                                                                     aria-hidden="true" class="far fa-check-circle"></i>
-                                                                <span> CRIAÇÃO DE ARTES E COPY </span>
+                                                                <span> CRIAÇÃO DE COPY </span>
                                                             </div>
                                                         </li>
                                                         <li class="elementor-repeater-item-6858b9d">
@@ -2933,9 +2954,6 @@
                                                             MÍNIMO DE 3 MESES </div>
                                                     </div>
                                                 </div>
-                                                <div class="elementor-price-table__ribbon">
-                                                    <div class="elementor-price-table__ribbon-inner"> Popular </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -2949,11 +2967,11 @@
                                             <div class="elementor-widget-container">
                                                 <div class="elementor-price-table">
                                                     <div class="elementor-price-table__header">
-                                                        <h3 class="elementor-price-table__heading"> PLANO OURO </h3>
+                                                        <h3 class="elementor-price-table__heading"> PLANO CONSTRUTORA </h3>
                                                     </div>
                                                     <div class="elementor-price-table__price"> <span
                                                             class="elementor-price-table__currency">R$</span> <span
-                                                            class="elementor-price-table__integer-part"> 2975 </span>
+                                                            class="elementor-price-table__integer-part"> 1500 </span>
                                                         <span
                                                             class="elementor-price-table__period elementor-typo-excluded">MENSAL</span>
                                                     </div>
@@ -2961,13 +2979,13 @@
                                                         <li class="elementor-repeater-item-7627cbe">
                                                             <div class="elementor-price-table__feature-inner"> <i
                                                                     aria-hidden="true" class="far fa-check-circle"></i>
-                                                                <span> 7 CAMPANHAS </span>
+                                                                <span> 5 CAMPANHAS </span>
                                                             </div>
                                                         </li>
                                                         <li class="elementor-repeater-item-f7b49dc">
                                                             <div class="elementor-price-table__feature-inner"> <i
                                                                     aria-hidden="true" class="far fa-check-circle"></i>
-                                                                <span> CRIAÇÃO DE ARTES E COPY </span>
+                                                                <span> CRIAÇÃO DE COPY </span>
                                                             </div>
                                                         </li>
                                                         <li class="elementor-repeater-item-6858b9d">
@@ -2997,205 +3015,7 @@
                                 </div>
                             </div>
                         </section>
-                        <div class="elementor-element elementor-element-1e6a8d4 elementor-view-default elementor-widget elementor-widget-icon"
-                            data-id="1e6a8d4" data-element_type="widget" data-widget_type="icon.default">
-                            <div class="elementor-widget-container">
-                                <div class="elementor-icon-wrapper">
-                                    <div class="elementor-icon"> <i aria-hidden="true" class="fas fa-angle-down"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="elementor-element elementor-element-b8a13bc elementor-widget elementor-widget-image"
-                            data-id="b8a13bc" data-element_type="widget" data-widget_type="image.default">
-                            <div class="elementor-widget-container"> <img width="300" height="89" alt=""
-                                    sizes="(max-width: 300px) 100vw, 300px"
-                                    nitro-lazy-srcset="https://cdn-ddamm.nitrocdn.com/gNNBoXhbWYjSgBTmiJLWTgrvAJciEVCN/assets/images/optimized/rev-88e1b51/ellasmarketingdigital.com.br/wp-content/uploads/2024/04/logo-google-300x89.png 300w, https://cdn-ddamm.nitrocdn.com/gNNBoXhbWYjSgBTmiJLWTgrvAJciEVCN/assets/images/optimized/rev-88e1b51/ellasmarketingdigital.com.br/wp-content/uploads/2024/04/logo-google-768x227.png 768w, https://cdn-ddamm.nitrocdn.com/gNNBoXhbWYjSgBTmiJLWTgrvAJciEVCN/assets/images/optimized/rev-88e1b51/ellasmarketingdigital.com.br/wp-content/uploads/2024/04/logo-google.png 918w"
-                                    nitro-lazy-src="https://cdn-ddamm.nitrocdn.com/gNNBoXhbWYjSgBTmiJLWTgrvAJciEVCN/assets/images/optimized/rev-88e1b51/ellasmarketingdigital.com.br/wp-content/uploads/2024/04/logo-google-300x89.png"
-                                    class="attachment-medium size-medium wp-image-13490 nitro-lazy" decoding="async"
-                                    nitro-lazy-empty="" id="NzEyOjU1MA==-1"
-                                    src="data:image/svg+xml;nitro-empty-id=NzEyOjU1MA==-1;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzAwIDg5IiB3aWR0aD0iMzAwIiBoZWlnaHQ9Ijg5IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjwvc3ZnPg==">
-                            </div>
-                        </div>
-                        <div class="elementor-element elementor-element-9757a4e elementor-widget elementor-widget-text-editor"
-                            data-id="9757a4e" data-element_type="widget" data-widget_type="text-editor.default">
-                            <div class="elementor-widget-container">
-                                <div data-w-id="618b3f80-8312-00e3-2ab2-7b567b9a78c9">
-                                    <p>Anuncie no Google Ads</p>
-                                </div>
-                            </div>
-                        </div>
-                        <section
-                            class="elementor-section elementor-inner-section elementor-element elementor-element-26aa0c6 elementor-section-full_width elementor-section-height-default elementor-section-height-default"
-                            data-id="26aa0c6" data-element_type="section">
-                            <div class="elementor-container elementor-column-gap-default">
-                                <div class="elementor-column elementor-col-33 elementor-inner-column elementor-element elementor-element-1e24c9c"
-                                    data-id="1e24c9c" data-element_type="column">
-                                    <div class="elementor-widget-wrap elementor-element-populated">
-                                        <div class="elementor-element elementor-element-e32bc7b elementor-widget elementor-widget-price-table"
-                                            data-id="e32bc7b" data-element_type="widget"
-                                            data-widget_type="price-table.default">
-                                            <div class="elementor-widget-container">
-                                                <div class="elementor-price-table">
-                                                    <div class="elementor-price-table__header">
-                                                        <h3 class="elementor-price-table__heading"> PLANO BRONZE </h3>
-                                                    </div>
-                                                    <div class="elementor-price-table__price"> <span
-                                                            class="elementor-price-table__currency">R$</span> <span
-                                                            class="elementor-price-table__integer-part"> 1000 </span>
-                                                        <span
-                                                            class="elementor-price-table__period elementor-typo-excluded">MENSAL</span>
-                                                    </div>
-                                                    <ul class="elementor-price-table__features-list">
-                                                        <li class="elementor-repeater-item-7627cbe">
-                                                            <div class="elementor-price-table__feature-inner"> <i
-                                                                    aria-hidden="true" class="far fa-check-circle"></i>
-                                                                <span> 2 CAMPANHAS </span>
-                                                            </div>
-                                                        </li>
-                                                        <li class="elementor-repeater-item-f7b49dc">
-                                                            <div class="elementor-price-table__feature-inner"> <i
-                                                                    aria-hidden="true" class="far fa-check-circle"></i>
-                                                                <span> REDE DE PESQUISA </span>
-                                                            </div>
-                                                        </li>
-                                                        <li class="elementor-repeater-item-6858b9d">
-                                                            <div class="elementor-price-table__feature-inner"> <i
-                                                                    aria-hidden="true" class="far fa-check-circle"></i>
-                                                                <span> RELATÓRIO MENSAL </span>
-                                                            </div>
-                                                        </li>
-                                                        <li class="elementor-repeater-item-8cc0416">
-                                                            <div class="elementor-price-table__feature-inner"> <i
-                                                                    aria-hidden="true" class="far fa-check-circle"></i>
-                                                                <span> FEEDBACK PELO WHATSAPP </span>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                    <div class="elementor-price-table__footer"> <a
-                                                            class="elementor-price-table__button elementor-button elementor-size-xl"
-                                                            href="https://wa.me//5585996261719"> QUERO CONTRATAR </a>
-                                                        <div class="elementor-price-table__additional_info"> *CONTRATO
-                                                            MÍNIMO DE 3 MESES </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="elementor-column elementor-col-33 elementor-inner-column elementor-element elementor-element-c6fd9a7"
-                                    data-id="c6fd9a7" data-element_type="column">
-                                    <div class="elementor-widget-wrap elementor-element-populated">
-                                        <div class="elementor-element elementor-element-38214e3 elementor-widget elementor-widget-price-table"
-                                            data-id="38214e3" data-element_type="widget"
-                                            data-widget_type="price-table.default">
-                                            <div class="elementor-widget-container">
-                                                <div class="elementor-price-table">
-                                                    <div class="elementor-price-table__header">
-                                                        <h3 class="elementor-price-table__heading"> PLANO PRATA </h3>
-                                                    </div>
-                                                    <div class="elementor-price-table__price"> <span
-                                                            class="elementor-price-table__currency">R$</span> <span
-                                                            class="elementor-price-table__integer-part"> 2375 </span>
-                                                        <span
-                                                            class="elementor-price-table__period elementor-typo-excluded">MENSAL</span>
-                                                    </div>
-                                                    <ul class="elementor-price-table__features-list">
-                                                        <li class="elementor-repeater-item-7627cbe">
-                                                            <div class="elementor-price-table__feature-inner"> <i
-                                                                    aria-hidden="true" class="far fa-check-circle"></i>
-                                                                <span> 5 CAMPANHAS </span>
-                                                            </div>
-                                                        </li>
-                                                        <li class="elementor-repeater-item-f7b49dc">
-                                                            <div class="elementor-price-table__feature-inner"> <i
-                                                                    aria-hidden="true" class="far fa-check-circle"></i>
-                                                                <span> REDE DE PESQUISA </span>
-                                                            </div>
-                                                        </li>
-                                                        <li class="elementor-repeater-item-6858b9d">
-                                                            <div class="elementor-price-table__feature-inner"> <i
-                                                                    aria-hidden="true" class="far fa-check-circle"></i>
-                                                                <span> RELATÓRIO MENSAL </span>
-                                                            </div>
-                                                        </li>
-                                                        <li class="elementor-repeater-item-8cc0416">
-                                                            <div class="elementor-price-table__feature-inner"> <i
-                                                                    aria-hidden="true" class="far fa-check-circle"></i>
-                                                                <span> FEEDBACK PELO WHATSAPP </span>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                    <div class="elementor-price-table__footer"> <a
-                                                            class="elementor-price-table__button elementor-button elementor-size-xl"
-                                                            href="https://wa.me//5585996261719"> QUERO CONTRATAR </a>
-                                                        <div class="elementor-price-table__additional_info"> *CONTRATO
-                                                            MÍNIMO DE 3 MESES </div>
-                                                    </div>
-                                                </div>
-                                                <div class="elementor-price-table__ribbon">
-                                                    <div class="elementor-price-table__ribbon-inner"> Popular </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="elementor-column elementor-col-33 elementor-inner-column elementor-element elementor-element-cf85626"
-                                    data-id="cf85626" data-element_type="column">
-                                    <div class="elementor-widget-wrap elementor-element-populated">
-                                        <div class="elementor-element elementor-element-28b81db elementor-widget elementor-widget-price-table"
-                                            data-id="28b81db" data-element_type="widget"
-                                            data-widget_type="price-table.default">
-                                            <div class="elementor-widget-container">
-                                                <div class="elementor-price-table">
-                                                    <div class="elementor-price-table__header">
-                                                        <h3 class="elementor-price-table__heading"> PLANO OURO </h3>
-                                                    </div>
-                                                    <div class="elementor-price-table__price"> <span
-                                                            class="elementor-price-table__currency">R$</span> <span
-                                                            class="elementor-price-table__integer-part"> 3150 </span>
-                                                        <span
-                                                            class="elementor-price-table__period elementor-typo-excluded">MENSAL</span>
-                                                    </div>
-                                                    <ul class="elementor-price-table__features-list">
-                                                        <li class="elementor-repeater-item-7627cbe">
-                                                            <div class="elementor-price-table__feature-inner"> <i
-                                                                    aria-hidden="true" class="far fa-check-circle"></i>
-                                                                <span> 7 CAMPANHAS </span>
-                                                            </div>
-                                                        </li>
-                                                        <li class="elementor-repeater-item-f7b49dc">
-                                                            <div class="elementor-price-table__feature-inner"> <i
-                                                                    aria-hidden="true" class="far fa-check-circle"></i>
-                                                                <span> REDE DE PESQUISA </span>
-                                                            </div>
-                                                        </li>
-                                                        <li class="elementor-repeater-item-6858b9d">
-                                                            <div class="elementor-price-table__feature-inner"> <i
-                                                                    aria-hidden="true" class="far fa-check-circle"></i>
-                                                                <span> RELATÓRIO MENSAL </span>
-                                                            </div>
-                                                        </li>
-                                                        <li class="elementor-repeater-item-8cc0416">
-                                                            <div class="elementor-price-table__feature-inner"> <i
-                                                                    aria-hidden="true" class="far fa-check-circle"></i>
-                                                                <span> FEEDBACK PELO WHATSAPP </span>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                    <div class="elementor-price-table__footer"> <a
-                                                            class="elementor-price-table__button elementor-button elementor-size-xl"
-                                                            href="https://wa.me//5585996261719"> QUERO CONTRATAR </a>
-                                                        <div class="elementor-price-table__additional_info"> *CONTRATO
-                                                            MÍNIMO DE 3 MESES </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
+
                         <div class="elementor-element elementor-element-2912206 elementor-align-center elementor-invisible elementor-widget elementor-widget-button"
                             data-id="2912206" data-element_type="widget"
                             data-settings="{&quot;_animation&quot;:&quot;bounce&quot;}"
@@ -3236,20 +3056,20 @@
     <script
         nitro-exclude="">(function () { var t = []; var e = {}; var r = null; var a = { enabled: true, observeSelectors: ['[class*="slider"]', '[id*="slider"]', ".fotorama", ".esg-grid"], attributes: ["src", "data-src"], attributeRegex: /^data:image\/.*?;nitro-empty-id=([^;]*);base64/, cssUrlFuncRegex: /^url\(['|"]data:image\/.*?;nitro-empty-id=([^;]*);base64/ }; var i = function (t) { setTimeout(t, 0) }; var l = function () { document.querySelectorAll("[nitro-lazy-empty]").forEach(function (t) { let r = t.getAttribute("nitro-lazy-src"); let a = t.getAttribute("id"); if (a && r) { e[a] = r } }); r = new MutationObserver(n); let t = document.querySelectorAll(a.observeSelectors.join(",")); for (let e = 0; e < t.length; ++e) { r.observe(t[e], { subtree: true, childList: true, attributes: true, attributeFilter: a.attributes, characterData: false, attributeOldValue: false, characterDataOldValue: false }) } }; var n = function (t) { for (let e = 0; e < t.length; ++e) { switch (t[e].type) { case "attributes": let r = t[e].target.getAttribute(t[e].attributeName); if (!r) break; let l = a.attributeRegex.exec(r); if (l && l[1]) { t[e].target.setAttribute("nitro-lazy-" + t[e].attributeName, u(l[1])); if (t[e].target.className.indexOf("nitro-lazy") < 0) { t[e].target.className += " nitro-lazy" } } break; case "childList": if (t[e].addedNodes.length > 0) { for (let r = 0; r < t[e].addedNodes.length; ++r) { let a = t[e].addedNodes[r]; i(function (t) { return function () { s(t, true) } }(a)) } } break } } }; var s = function (e, r) { if (!(e instanceof HTMLElement)) return; if (t.indexOf(e) > -1) return; for (let t = 0; t < a.attributes.length; ++t) { let r = e.getAttribute(a.attributes[t]); if (r) { let i = a.attributeRegex.exec(r); if (i) { e.setAttribute("nitro-lazy-" + a.attributes[t], u(i[1])); if (e.className.indexOf("nitro-lazy") < 0) { e.className += " nitro-lazy" } } } } if (e.style.backgroundImage) { let t = a.cssUrlFuncRegex.exec(e.style.backgroundImage); if (t) { e.setAttribute("nitro-lazy-bg", u(t[1])); if (e.className.indexOf("nitro-lazy") < 0) { e.className += " nitro-lazy" } } } t.push(e); if (r) { e.querySelectorAll("*").forEach(function (t) { i(function () { s(t) }) }) } }; function u(t) { return e[t] } if (a.enabled) { l() } })();</script>
     <script nitro-exclude="">
-        document.cookie = 'nitroCachedPage=' + (!window.NITROPACK_STATE ? '0' : '1') + '; path=/; SameSite=Lax';
+                    document.cookie = 'nitroCachedPage=' + (!window.NITROPACK_STATE ? '0' : '1') + '; path=/; SameSite=Lax';
     </script> <template data-nitro-marker-id="26360ee6f507447f93f5f9cb65c8f280-1"></template>
     <script src="blob:https://ellasmarketingdigital.com.br/cb78938f-0b1a-42d4-8d2f-713029c36076"
         data-nitro-for-id="26360ee6f507447f93f5f9cb65c8f280-1" type="text/javascript"
         id="26360ee6f507447f93f5f9cb65c8f280-1"></script>
     <script nitro-exclude="">
-        if (!window.NITROPACK_STATE || window.NITROPACK_STATE != 'FRESH') {
-            var proxyPurgeOnly = 0;
-            if (typeof navigator.sendBeacon !== 'undefined') {
-                var nitroData = new FormData(); nitroData.append('nitroBeaconUrl', 'aHR0cHM6Ly9lbGxhc21hcmtldGluZ2RpZ2l0YWwuY29tLmJyL2dlc3Rhby1kZS10cmFmZWdvLXBhZ28v'); nitroData.append('nitroBeaconCookies', 'W10='); nitroData.append('nitroBeaconHash', '360b4fcb794c8f166e6b1577c5508ffda3792f2dc5a7155cee746ef23b20ead0d7ad18439701ae9930cbfecb97f0da7c85223e8604e67195d3eaa480e5aa4184'); nitroData.append('proxyPurgeOnly', ''); nitroData.append('layout', 'page'); navigator.sendBeacon(location.href, nitroData);
-            } else {
-                var xhr = new XMLHttpRequest(); xhr.open('POST', location.href, true); xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); xhr.send('nitroBeaconUrl=aHR0cHM6Ly9lbGxhc21hcmtldGluZ2RpZ2l0YWwuY29tLmJyL2dlc3Rhby1kZS10cmFmZWdvLXBhZ28v&nitroBeaconCookies=W10=&nitroBeaconHash=360b4fcb794c8f166e6b1577c5508ffda3792f2dc5a7155cee746ef23b20ead0d7ad18439701ae9930cbfecb97f0da7c85223e8604e67195d3eaa480e5aa4184&proxyPurgeOnly=&layout=page');
-            }
-        }
+                    if (!window.NITROPACK_STATE || window.NITROPACK_STATE != 'FRESH') {
+                        var proxyPurgeOnly = 0;
+                        if (typeof navigator.sendBeacon !== 'undefined') {
+                            var nitroData = new FormData(); nitroData.append('nitroBeaconUrl', 'aHR0cHM6Ly9lbGxhc21hcmtldGluZ2RpZ2l0YWwuY29tLmJyL2dlc3Rhby1kZS10cmFmZWdvLXBhZ28v'); nitroData.append('nitroBeaconCookies', 'W10='); nitroData.append('nitroBeaconHash', '360b4fcb794c8f166e6b1577c5508ffda3792f2dc5a7155cee746ef23b20ead0d7ad18439701ae9930cbfecb97f0da7c85223e8604e67195d3eaa480e5aa4184'); nitroData.append('proxyPurgeOnly', ''); nitroData.append('layout', 'page'); navigator.sendBeacon(location.href, nitroData);
+                        } else {
+                            var xhr = new XMLHttpRequest(); xhr.open('POST', location.href, true); xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); xhr.send('nitroBeaconUrl=aHR0cHM6Ly9lbGxhc21hcmtldGluZ2RpZ2l0YWwuY29tLmJyL2dlc3Rhby1kZS10cmFmZWdvLXBhZ28v&nitroBeaconCookies=W10=&nitroBeaconHash=360b4fcb794c8f166e6b1577c5508ffda3792f2dc5a7155cee746ef23b20ead0d7ad18439701ae9930cbfecb97f0da7c85223e8604e67195d3eaa480e5aa4184&proxyPurgeOnly=&layout=page');
+                        }
+                    }
     </script> <template data-nitro-marker-id="buttonizer_frontend_javascript-js-extra"></template>
     <script src="blob:https://ellasmarketingdigital.com.br/0026e5a4-6075-4f9b-9f58-c0dcbaf90f6f"
         data-nitro-for-id="buttonizer_frontend_javascript-js-extra"

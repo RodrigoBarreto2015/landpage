@@ -414,6 +414,10 @@
     }
 }
 
+html{
+    scroll-behavior: smooth;
+}
+
 .title-container{
     background-color: #cea356; 
 }

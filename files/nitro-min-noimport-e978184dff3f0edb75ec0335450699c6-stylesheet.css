@@ -12668,6 +12668,7 @@ body.rtl .e-con {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    color: #ca9351;
 }
 
 .elementor-icon i.fad {
